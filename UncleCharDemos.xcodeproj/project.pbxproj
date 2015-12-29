@@ -34,7 +34,6 @@
 		9DC21A841C30E484007DB2A5 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC21A811C30E484007DB2A5 /* Default-568h@2x.png */; };
 		9DC21A851C30E484007DB2A5 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC21A821C30E484007DB2A5 /* Default.png */; };
 		9DC21A861C30E484007DB2A5 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC21A831C30E484007DB2A5 /* Default@2x.png */; };
-		9DC21A961C30E585007DB2A5 /* LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DC21A951C30E585007DB2A5 /* LaunchViewController.m */; };
 		9DC21A9E1C30E6E2007DB2A5 /* 10.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC21A981C30E6E2007DB2A5 /* 10.png */; };
 		9DC21A9F1C30E6E2007DB2A5 /* 11.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC21A991C30E6E2007DB2A5 /* 11.png */; };
 		9DC21AA01C30E6E2007DB2A5 /* 14.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DC21A9A1C30E6E2007DB2A5 /* 14.png */; };
@@ -2342,8 +2341,6 @@
 		9DC21A811C30E484007DB2A5 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../../Default-568h@2x.png"; sourceTree = "<group>"; };
 		9DC21A821C30E484007DB2A5 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../../Default.png; sourceTree = "<group>"; };
 		9DC21A831C30E484007DB2A5 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../../Default@2x.png"; sourceTree = "<group>"; };
-		9DC21A941C30E585007DB2A5 /* LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LaunchViewController.h; path = ../../LaunchViewController.h; sourceTree = "<group>"; };
-		9DC21A951C30E585007DB2A5 /* LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LaunchViewController.m; path = ../../LaunchViewController.m; sourceTree = "<group>"; };
 		9DC21A981C30E6E2007DB2A5 /* 10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10.png; sourceTree = "<group>"; };
 		9DC21A991C30E6E2007DB2A5 /* 11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 11.png; sourceTree = "<group>"; };
 		9DC21A9A1C30E6E2007DB2A5 /* 14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 14.png; sourceTree = "<group>"; };
@@ -4725,15 +4722,6 @@
 				9DC21A7A1C30D2C9007DB2A5 /* 9.png */,
 			);
 			path = Framework;
-			sourceTree = "<group>";
-		};
-		9DC21A871C30E52A007DB2A5 /* LaunchViewController */ = {
-			isa = PBXGroup;
-			children = (
-				9DC21A941C30E585007DB2A5 /* LaunchViewController.h */,
-				9DC21A951C30E585007DB2A5 /* LaunchViewController.m */,
-			);
-			path = LaunchViewController;
 			sourceTree = "<group>";
 		};
 		9DC21A971C30E6E2007DB2A5 /* LaunchImg */ = {
@@ -7282,7 +7270,6 @@
 				DBDE27D61C2FBB9300D10851 /* Tools */,
 				DB167AD11C2D759400AE61DB /* Images */,
 				DB167ACF1C2D755E00AE61DB /* BaseViewControllers */,
-				9DC21A871C30E52A007DB2A5 /* LaunchViewController */,
 				DB167AD01C2D758000AE61DB /* LeftViewController */,
 				DB167AD21C2D75C200AE61DB /* MainTabBarSubControlles */,
 				DB167AA21C2D734100AE61DB /* Assets.xcassets */,
@@ -9795,7 +9782,6 @@
 				9DC22C111C3102A8007DB2A5 /* DBManager.m in Sources */,
 				9D81F5EB1C325ADB00EA6CB4 /* MASLayoutConstraint.m in Sources */,
 				DB167AF81C2D9CEA00AE61DB /* fuckViewController.m in Sources */,
-				9DC21A961C30E585007DB2A5 /* LaunchViewController.m in Sources */,
 				9DC22BEA1C30EF92007DB2A5 /* ASIDataCompressor.m in Sources */,
 				9DC22C1A1C3115C7007DB2A5 /* OperateDBViewController.m in Sources */,
 				DB167ACB1C2D737000AE61DB /* UncleCharAppDelegate.m in Sources */,
