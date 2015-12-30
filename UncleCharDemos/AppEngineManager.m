@@ -56,14 +56,52 @@ static  AppEngineManager *sharesElement = nil;
         
         self.mainTabBarController = [[MainTabBarController alloc]init];
         
+        self.dirDocument = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+
+        self.dirCache = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
         
-        NSLog(@"BaseViewController%@",self.baseViewController);
-        NSLog(@"BaseViewControllerNavC%@",self.baseNavController);
-        NSLog(@"MainTBC%@",self.mainTabBarController);
+        self.dirTemp  = NSTemporaryDirectory();
+        
+        self.dirDBSqlite = [self.dirDocument stringByAppendingPathComponent:@"MyAppDataBase.sqlite"];
+        
+        NSLog(@"    BaseViewController:%@",self.baseViewController);
+        NSLog(@"BaseViewControllerNavC:%@",self.baseNavController);
+        NSLog(@"               MainTBC:%@",self.mainTabBarController);
+        NSLog(@"          DocumentPath:%@",self.dirDocument);
+        NSLog(@"             CachePath:%@",self.dirCache);
+        NSLog(@"              TempPath:%@",self.dirTemp);
     }
     return self;
 }
 
 
+- (void)writeDataToDirectoryWithData:(NSData *)data fileNameForData:(NSString *)fileName underSuperDirecotry:(NSString *)directory {
+
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    // 创建目录
+    BOOL res=[fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
+    if (res) {
+        NSLog(@"目录-%@创建成功",directory);
+        [self writeDirWithData:data withFileName:fileName atTargetPath:directory];
+    }else{
+        NSLog(@"目录-%@-创建失败",directory);
+    }
+    
+
+}
+-(void )writeDirWithData:(NSData *)data withFileName:(NSString *)fileName atTargetPath:(NSString *)path{
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *testDirectory = [path stringByAppendingPathComponent:fileName];
+
+    BOOL res=[fileManager createFileAtPath:testDirectory contents:data attributes:nil];
+    
+    if (res) {
+        NSLog(@"%@写入成功:",fileName );
+    }else{
+        NSLog(@"%@写入失败",fileName);}
+
+}
 
 @end

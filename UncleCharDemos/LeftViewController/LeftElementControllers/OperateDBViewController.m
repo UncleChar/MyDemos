@@ -13,6 +13,7 @@
 #import "ConfigUITools.h"
 #import "UserTestModel.h"
 #import "OperateDBTabelViewCell.h"
+#import "AppEngineManager.h"
 
 #define kScreenHeight  [UIScreen mainScreen].bounds.size.height
 #define kScreenWidth  [UIScreen mainScreen].bounds.size.width
@@ -44,32 +45,10 @@
     
     self.title = self.navigationTitle;
     self.view.backgroundColor = [UIColor brownColor];
-    
-    if ([self checkDBIsOpen]) {
-    
-        
-    }else {
-    
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"是否要打开数据库" message:@"open now ？" preferredStyle:UIAlertControllerStyleAlert];
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            
-        }];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            
-            _db = [[DBManager sharedDBManager]initDBDirectoryWithPath:[self getDBPath]];//打开数据库
-            [_db createDBTableWithTableName:@"UserInfo"];
-            
-        }];
-        [alertController addAction:cancelAction];
-        [alertController addAction:okAction];
-    
-    }
-    
+
     
     _countOfBtn = 0;
+    
     if (!_showDataArray) {
         
         _showDataArray = [[NSMutableArray alloc]initWithCapacity:0];
@@ -109,10 +88,6 @@
     UIButton *openFmdbBtn = [ConfigUITools configButtonWithTitle:@"数据库存储图片" color:kBtnColor fontSize:14 frame:CGRectMake(40, 120, 120, 30) superView:self.view];
     openFmdbBtn.tag = 1000 + 2;
     [openFmdbBtn addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-
-    
-    
     
 
     
@@ -238,7 +213,7 @@
                         model.telephone = @"13852042434";
                         model.userMusic = _networkDataArray[i];
                         
-                        [_db insertDBWithData:model forTableName:@"UserInfo"];
+                        [[DBManager sharedDBManager] insertDBWithData:model forTableName:@"UserInfo"];
                     }
                 }
                 
@@ -259,7 +234,7 @@
             {
                 [_showDataArray removeAllObjects];
                 NSArray *allDataArray = [NSArray array];
-                allDataArray = [_db allDataWithTableName:@"UserInfo"];
+                allDataArray = [[DBManager sharedDBManager] allDataWithTableName:@"UserInfo"];
                 
 //                for (UserTestModel *model in allDataArray) {
 //                    
@@ -275,7 +250,7 @@
                 UserTestModel *model = [[UserTestModel alloc]init];
                 model.userID = @"file_01";
                 
-                [_db updateDBDataWithModel:model forTableName:@"UserInfo"];
+                [[DBManager sharedDBManager] updateDBDataWithModel:model forTableName:@"UserInfo"];
                 
                 
             }
@@ -283,7 +258,7 @@
             case 6:
             {
                 
-                [_db clearAllDataWithTableName:@"UserInfo"];
+                [[DBManager sharedDBManager] clearAllDataWithTableName:@"UserInfo"];
                 
             }
                 break;
@@ -313,7 +288,7 @@
             {
                 [_showDataForImgArray removeAllObjects];
                 NSArray *allDataArray = [NSArray array];
-                allDataArray = [_db allDataWithTableName:@"UserInfo"];
+                allDataArray = [[DBManager sharedDBManager] allDataWithTableName:@"UserInfo"];
                 
                 //                for (UserTestModel *model in allDataArray) {
                 //
@@ -400,10 +375,10 @@
         _networkDataArray = [[NSMutableArray alloc]initWithCapacity:0];
     }
 
-    [self createDirWithData:receiveData withFileName:[NSString stringWithFormat:@"%ld",request.tag]]; //把数据直接写入沙盒
+//    [self createDirWithData:receiveData withFileName:[NSString stringWithFormat:@"%ld",request.tag]]; //把数据直接写入沙盒
+    [[AppEngineManager sharedInstance] writeDataToDirectoryWithData:receiveData fileNameForData:[NSString stringWithFormat:@"UCimg%ld.png",request.tag] underSuperDirecotry:[[AppEngineManager sharedInstance].dirDocument stringByAppendingPathComponent:@"NetworkData"]];
     
     [_networkDataArray addObject:receiveData];
-//    _receiveDataFromNetW = receiveData;
     
     NSLog(@"Value: %f", [_reqestProgress progress]);
     
@@ -425,78 +400,6 @@
     [alertController addAction:okAction];
 }
 
-
-
-//获取应用沙盒根路径
--(void)dirHome{
-    NSString *dirHome=NSHomeDirectory();
-    NSLog(@"app_home: %@",dirHome);
-}
-
-- (NSString *)getDBPath {
-    
-    NSString *documentsPath =[self dirDoc];
-    NSString *testDirectory = [documentsPath stringByAppendingPathComponent:@"Base.sqlite"];
-    
-    return testDirectory;
-    
-    
-    
-}
-
-
--(void )createDirWithData:(NSData *)data withFileName:(NSString *)fileName{
-    
-    NSString *documentsPath =[self dirDoc];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *testDirectory = [documentsPath stringByAppendingPathComponent:@"FMDBData"];
-    // 创建目录
-    BOOL res=[fileManager createDirectoryAtPath:testDirectory withIntermediateDirectories:YES attributes:nil error:nil];
-    if (res) {
-        NSLog(@"文件夹-创建成功");
-        [self createFileWithData:data withFileName:fileName];
-    }else{
-        NSLog(@"文件夹-创建失败");
-    }
-}
-
-//创建文件
--(void )createFileWithData:(NSData *)data withFileName:(NSString *)fileName{
-    NSString *documentsPath =[self dirDoc];
-    NSString *testDirectory = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"FMDBData/images_%@.png",fileName]];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    BOOL res=[fileManager createFileAtPath:testDirectory contents:data attributes:nil];
-    
-    if (res) {
-        NSLog(@"文件创建成功:" );
-    }else{
-        NSLog(@"文件创建失败");}
-}
-
-
-
-
-//获取Documents目录
--(NSString *)dirDoc{
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSLog(@"apphomedoc: %@",documentsDirectory);
-    return documentsDirectory;
-}
-
-- (BOOL)checkDBIsOpen {
-    
-    if (_db) {
-        
-        return YES;
-    }else {
-        
-        return NO;
-    }
-    
-}
 
 - (void)dealloc
 {
